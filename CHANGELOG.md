@@ -18,6 +18,8 @@ Exceptions are acceptable depending on the circumstances (critical bug fixes tha
 
 ### Added
 
+- added `CLAUDE.md` with Claude Code guidance covering the MRC/no-ARC and KVC-keyed picker conventions and the Xcode-only build
+
 ### Changed
 
 ### Removed
