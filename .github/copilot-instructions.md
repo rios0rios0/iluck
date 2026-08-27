@@ -84,7 +84,7 @@ A pre-built `.ipa` and `.app` bundle are available in `Build/` and can be used d
 
 ## CI/CD
 
-There is no CI/CD pipeline configured for this repository. The project is archived and no automated builds or tests exist.
+There is no build or deployment pipeline configured for this repository. The project is archived and no automated builds or tests exist. The only workflows are `.github/workflows/claude-review.yaml` and `.github/workflows/claude-mention.yaml`, which call the shared Claude reusable workflows in `rios0rios0/pipelines` and need the `CLAUDE_CODE_OAUTH_TOKEN` secret.
 
 ## Development Workflow
 

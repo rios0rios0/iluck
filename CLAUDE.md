@@ -22,7 +22,7 @@ iLuck is a **discontinued** iOS slot-machine game (last worked on 2012-04-12), p
 
 ## Build
 
-- No package manager, no CI, no tests. Build is Xcode-only: open `Project/iLuck.xcodeproj`, select an iOS Simulator scheme, Cmd+R.
+- No package manager, no tests, and no build automation -- the only CI is the Claude review and `@claude` mention workflows. Build is Xcode-only: open `Project/iLuck.xcodeproj`, select an iOS Simulator scheme, Cmd+R.
 - On modern Xcode add `-fno-objc-arc` to the target's *Other C Flags*, or the MRC code will not compile.
 - Prebuilt `Build/iLuck.app` and `Build/iLuck.ipa` run without compiling.
 
