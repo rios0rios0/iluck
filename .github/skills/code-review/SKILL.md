@@ -1,11 +1,11 @@
 ---
 name: code-review
-description: "Review pull requests and diffs in iluck — the preserved 2012 iOS luck and random-number app in manual-reference-counted Objective-C — against the rios0rios0/guide standards, with extra weight on retain/release balance, the existing naming convention, and the committed build artefacts. Use when reviewing a PR, a branch, or staged changes here."
+description: "Review pull requests and diffs in iluck — the preserved 2012 iOS slot-machine game in manual-reference-counted Objective-C — against the rios0rios0/guide standards, with extra weight on retain/release balance, the existing naming convention, and the committed build artefacts. Use when reviewing a PR, a branch, or staged changes here."
 ---
 
 # Code review — `iluck`
 
-`iluck` is a small iOS app that generates lucky numbers through a picker-based interface, built with Xcode 4 and manual reference counting. It is a **preserved historical archive**, discontinued in 2012, and it ships a pre-built `.app` bundle under `Build/`.
+`iluck` is a small iOS slot-machine game: three `UIPickerView` columns of tech-company logos spin on each **Play** tap, and a match across all three wins. It was built with Xcode 4 and manual reference counting. It is a **preserved historical archive**, discontinued in 2012, and it ships a pre-built `.app` bundle under `Build/`.
 
 ## When to use this skill
 
