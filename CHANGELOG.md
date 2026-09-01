@@ -22,6 +22,12 @@ Exceptions are acceptable depending on the circumstances (critical bug fixes tha
 
 ## [Unreleased]
 
+## [0.4.1] - 2026-09-01
+
+### Changed
+
+- corrected the `.github/skills/code-review/SKILL.md` description and intro, which called `iluck` a "luck and random-number app" that "generates lucky numbers", to describe the actual slot-machine game that matches tech-company logos across three `UIPickerView` columns, matching `README.md`, `CLAUDE.md`, and the code
+
 ## [0.4.0] - 2026-08-28
 
 ### Added
