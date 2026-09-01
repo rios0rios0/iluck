@@ -1,3 +1,0 @@
-kind: 'Changed'
-body: 'corrected the `.github/skills/code-review/SKILL.md` description and intro, which called `iluck` a "luck and random-number app" that "generates lucky numbers", to describe the actual slot-machine game that matches tech-company logos across three `UIPickerView` columns, matching `README.md`, `CLAUDE.md`, and the code'
-time: '2026-09-01T16:54:34.247056907Z'
