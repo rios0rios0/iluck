@@ -84,7 +84,7 @@ A pre-built `.ipa` and `.app` bundle are available in `Build/` and can be used d
 
 ## CI/CD
 
-There is no build or deployment pipeline configured for this repository. The project is archived and no automated builds or tests exist. The only workflows are `.github/workflows/claude-review.yaml` and `.github/workflows/claude-mention.yaml`, which call the shared Claude reusable workflows in `rios0rios0/pipelines` and need the `CLAUDE_CODE_OAUTH_TOKEN` secret.
+There is no build or deployment pipeline configured for this repository. The project is archived and no automated builds or tests exist. Three workflows call reusable workflows in `rios0rios0/pipelines`: `.github/workflows/claude-review.yaml` (on pull requests) and `.github/workflows/claude-mention.yaml` (on comments, reviews, and issues) — the shared Claude review and `@claude` mention flows, needing the `CLAUDE_CODE_OAUTH_TOKEN` secret — and `.github/workflows/checks.yaml` (the shared rebase and changelog gate, on pull requests).
 
 ## Development Workflow
 
