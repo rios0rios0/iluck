@@ -1,3 +1,3 @@
 kind: 'Changed'
 body: 'refreshed `CLAUDE.md`, `.github/copilot-instructions.md`, and `.github/skills/code-review/SKILL.md` to record the `checks.yaml` rebase and changelog gate and fix the secret-hygiene example'
-time: '2026-09-07T12:30:35.412778094Z'
+time: '2026-09-07T23:56:17.06257203Z'
