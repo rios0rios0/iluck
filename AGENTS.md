@@ -1,6 +1,6 @@
-# CLAUDE.md
+# AGENTS.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to AI coding agents (Claude Code, Codex, Cursor, GitHub Copilot) when working with code in this repository.
 
 ## Status
 
@@ -8,7 +8,7 @@ iLuck is a **discontinued** iOS slot-machine game (last worked on 2012-04-12), p
 
 ## Architecture
 
-- Single-screen UIKit app. `Project/iLuck/MasterViewController.{h,m}` is the whole game: it acts as the `UIPickerView` delegate/dataSource, owns all state, and implements win detection and audio. `AppDelegate.{h,m}` only creates the window and root controller; `MainWindow.xib` wires the picker and Play button.
+- Single-screen UIKit app. `Project/iLuck/MasterViewController.{h,m}` is the whole game: it acts as the `UIPickerView` delegate/dataSource, owns all state, and implements win detection and audio. `MainWindow.xib` (the `NSMainNibFile`) instantiates the window and the controller and wires the picker, the Play button (`-Play:`), and the info button (`-More:`); `AppDelegate.{h,m}` only adds the controller's view to that window.
 - Three picker columns each render `UIImageView`s held in `NSArrayColum1/2/3`, built once in `-viewDidLoad`. The six logos (Apple, Mac, Microsoft, Windows, Google, Android) are loaded by filename via `imageNamed:`.
 - `-Play:` picks a random row per column with `random()` (seeded once via `srandom(time(NULL))`), declares a win only when all three rows match, then schedules `-PlaySoundWinner` or `-EnableButton` with `performSelector:withObject:afterDelay:`. There are no timers or blocks — delayed selectors drive all sequencing and button re-enabling.
 - Sounds are AudioToolbox system sounds (`Play.wav`, `Winner.wav`) created in `-viewDidLoad` and disposed in `-viewDidUnload`/`-dealloc`.
