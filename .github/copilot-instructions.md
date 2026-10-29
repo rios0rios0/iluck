@@ -10,8 +10,11 @@ iLuck is a discontinued iOS slot machine game originally developed in **April 20
 
 ```
 iluck/
+├── .changes/unreleased/          # chlog changelog fragments
 ├── .github/
-│   └── copilot-instructions.md   # This file
+│   ├── copilot-instructions.md   # This file
+│   ├── skills/code-review/       # Code-review skill
+│   └── workflows/                # Claude review/mention and checks (rebase + changelog gate)
 ├── Build/
 │   ├── iLuck.app/                # Pre-built application bundle (binary + assets)
 │   └── iLuck.ipa                 # Packaged iOS application (sideloadable)
@@ -21,6 +24,7 @@ iluck/
 │   ├── Icons/                    # App icons in multiple sizes + PSD sources
 │   └── PickerView/               # Tech company logo PNGs used in the slot columns
 ├── Project/
+│   ├── {Default,Default@2x,Icon,Icon@2x}.png  # Launch images and app icons (referenced as ../ from the target)
 │   ├── iLuck.xcodeproj/          # Xcode project file
 │   └── iLuck/
 │       ├── AppDelegate.{h,m}     # App entry point and window setup
@@ -30,6 +34,9 @@ iluck/
 │       ├── Play.wav              # Spin sound effect
 │       ├── Winner.wav            # Win sound effect
 │       └── *.png                 # Runtime image assets copied into the bundle
+├── AGENTS.md                     # Shared agent instructions
+├── CHANGELOG.md                  # Generated from .changes/ by chlog — do not edit
+├── CLAUDE.md                     # Imports AGENTS.md
 ├── CONTRIBUTING.md               # Historical build notes
 ├── LICENSE
 └── README.md
@@ -50,7 +57,7 @@ iluck/
 
 - **MVC** — standard iOS MVC: `AppDelegate` bootstraps the window; `MasterViewController` owns all game state, UI outlets, and delegate callbacks.
 - **Single-screen app** — one `UIViewController` subclass (`MasterViewController`) handles everything.
-- **Manual Reference Counting (MRC)** — `retain`/`release`/`autorelease` used throughout; no `@autoreleasepool` blocks. Modern Xcode requires the `-fno-objc-arc` compiler flag for this target.
+- **Manual Reference Counting (MRC)** — `retain`/`release`/`autorelease` used throughout; the only `@autoreleasepool` is the template one in `main.m`. Modern Xcode requires the `-fno-objc-arc` compiler flag for this target.
 - **Delegate-based UI** — `UIPickerViewDelegate` and `UIPickerViewDataSource` are both implemented on `MasterViewController`.
 - **Delayed selectors** — `performSelector:withObject:afterDelay:` drives button re-enable and sound sequencing instead of timers or blocks.
 
@@ -68,7 +75,7 @@ The entire game loop lives here:
 
 ### `Project/iLuck/AppDelegate.{h,m}`
 
-Standard iOS 5 app delegate — creates the `UIWindow` and sets the root view controller.
+App delegate whose `window` and `masterViewController` outlets are instantiated by `MainWindow.xib`; it only adds the controller's view to the window and makes it key.
 
 ## Build Instructions (Historical)
 
@@ -97,7 +104,7 @@ Since the project is archived, typical workflow is read-only exploration. If mod
 
 ## Coding Conventions
 
-- **MRC everywhere** — always balance `retain`/`release`; no `__strong`, `__weak`, or `@autoreleasepool`.
+- **MRC everywhere** — always balance `retain`/`release`; no `__strong` or `__weak`, and no `@autoreleasepool` beyond the existing one in `main.m`.
 - **IBOutlet / IBAction** — UI connections are declared with `IBOutlet` and `IBAction` keywords and wired in Interface Builder (XIB).
 - **`@synthesize`** — property accessors are generated with `@synthesize` (pre-`@property` auto-synthesis era).
 - **Naming** — variables are prefixed with their type abbreviation (e.g., `int_attempts`, `NSArrayColum1`, `UIButtonGo`) — this is the existing convention in the codebase.
@@ -111,7 +118,7 @@ Since the project is archived, typical workflow is read-only exploration. If mod
 | Inspect compiled binary | `Build/iLuck.app/iLuck` (ARM slice) |
 | Install on a device (historical) | Sideload `Build/iLuck.ipa` with Xcode Organizer or a third-party tool |
 | Change picker images | Replace PNGs in `Project/iLuck/` (and `Imgs/PickerView/` for source assets) |
-| Add a new tech logo | Add a PNG, add it to each column's `NSArray` in `-viewDidLoad`, update win-detection logic |
+| Add a new tech logo | Add the PNG to `Project/iLuck/` and to *Copy Bundle Resources*; in `-viewDidLoad` load it with `imageNamed:`, then create (and release) a `UIImageView` for it inside the loop and add it to the single `initWithObjects:` list — one loop builds all three columns, and win detection compares row indices so it needs no change |
 
 ## Troubleshooting
 

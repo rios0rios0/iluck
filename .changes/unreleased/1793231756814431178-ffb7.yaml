@@ -1,0 +1,3 @@
+kind: 'Changed'
+body: 'moved the agent instructions from `CLAUDE.md` to `AGENTS.md`, keeping a `CLAUDE.md` that imports it, and refreshed `AGENTS.md`, `.github/copilot-instructions.md`, and `.github/skills/code-review/SKILL.md` to credit `MainWindow.xib` with creating the window and controller, allow the template `@autoreleasepool` in `main.m`, update the repository tree and the add-a-logo recipe, and point the review skill at `AGENTS.md` instead of `CLAUDE.md`'
+time: '2026-10-28T23:55:56.814363266Z'

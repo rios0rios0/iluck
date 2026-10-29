@@ -20,7 +20,7 @@ The canonical engineering standards live in the
 repo-tailored index into that guide plus the rules that only apply here. Precedence, highest
 first:
 
-1. This repository's `.github/copilot-instructions.md`, `CLAUDE.md`, and `CONTRIBUTING.md` —
+1. This repository's `.github/copilot-instructions.md`, `AGENTS.md`, and `CONTRIBUTING.md` —
    they describe *this* codebase and its load-bearing invariants.
 2. The **rios0rios0/guide** wiki — the shared standard.
 3. General language idiom.
@@ -45,9 +45,9 @@ guide disagree, the guide wins and this file should be corrected in the same pul
    `git symbolic-ref refs/remotes/origin/HEAD` (strip `refs/remotes/origin/`; fall back to `main`),
    then read the diff with `git diff <default>...HEAD` and the file list with
    `git diff <default>...HEAD --name-only`.
-2. **Read whole files, not just hunks.** A hunk cannot show a layering violation, a missing
-   test, or a duplicated helper. Open every changed file in full, plus the files it imports
-   from the layer below.
+2. **Read whole files, not just hunks.** A hunk cannot show an unbalanced `retain`/`release`
+   or an outlet renamed in a header but not in `MainWindow.xib`. Open every changed file in
+   full, plus the header or XIB paired with it.
 3. **Check the change set as a unit** — not only the code. A change that alters behaviour,
    configuration, or architecture is incomplete without its changelog entry and its
    documentation update, and that omission is a finding in its own right.
@@ -62,7 +62,7 @@ guide disagree, the guide wins and this file should be corrected in the same pul
 These are the checks that catch real defects in this repository. Work through
 them before the generic ones.
 
-- **Manual reference counting, everywhere.** Balance every `retain` with a `release`; no `__strong`, `__weak`, or `@autoreleasepool`. An unbalanced retain leaks and an over-release crashes — **Critical** in a project with no ARC.
+- **Manual reference counting, everywhere.** Balance every `retain` with a `release`; no `__strong` or `__weak`, and no `@autoreleasepool` beyond the template one in `main.m`. An unbalanced retain leaks and an over-release crashes — **Critical** in a project with no ARC.
 - **Property accessors are generated with `@synthesize`** — this predates auto-synthesis and the code depends on the explicit form.
 - **The naming convention is type-prefixed** (`int_attempts`, `NSArrayColum1`, `UIButtonGo`). It is unusual, and it is the established convention here — new identifiers match it rather than "correcting" it.
 - **Randomness is the product.** If a change touches number generation, check the seeding and the range arithmetic: an off-by-one in a modulo range is the classic defect, and a fixed seed makes every run identical.
@@ -79,7 +79,7 @@ them before the generic ones.
 
 ## Tests
 
-There are no XCTest targets. Verification is building in a simulator and exercising the generation flow, watching for leaks with Instruments when the change touches memory management.
+There are no XCTest targets. Verification is building in a simulator and exercising the spin-and-win flow (`-Play:` through `-EnableButton`), watching for leaks with Instruments when the change touches memory management.
 
 ## Documentation and change control
 
@@ -99,8 +99,9 @@ hand.
 - Fragment bodies start with a lowercase verb in simple past tense, capitalise proper nouns
   (GitHub, Go, Docker), and wrap code identifiers and versions in backticks.
 - `README.md` is updated whenever usage, setup, configuration, or architecture changes;
-  `.github/copilot-instructions.md` and `CLAUDE.md` whenever the workflow, commands, or
-  structure changes. Documentation and code ship in one commit.
+  `.github/copilot-instructions.md` and `AGENTS.md` whenever the workflow, commands, or
+  structure changes. `CLAUDE.md` stays the single line `@AGENTS.md`. Documentation and code
+  ship in one commit.
 
 ## Git Flow and pull-request hygiene
 
@@ -143,9 +144,9 @@ See [Security](https://github.com/rios0rios0/guide/wiki/Security).
 A review that raises noise gets ignored. Do not report these:
 
 - Anything that amounts to "this is old code". Modernising idiom, renaming identifiers, reformatting, or introducing a framework into a preserved archive is out of scope and destroys the historical record.
-- Mixed Portuguese and English identifiers and UI strings — that is the original code.
+- Misspelled original identifiers (`NSArrayColum1`, `int_sequece`) — that is the original code, and the `NSArrayColum<n>` names are KVC keys the picker depends on.
 - The pre-built `.app` bundle under `Build/`.
-- The absence of tests, linting, or CI.
+- The absence of tests, linting, or a build pipeline.
 - Anything the guide does not require and this file does not list, unless it is a genuine correctness or security defect — say so plainly and label it a Suggestion.
 
 ## Review output format
@@ -165,7 +166,7 @@ A review that raises noise gets ignored. Do not report these:
 ### Change-control checklist
 - [ ] Changelog entry present for every behavioural change
 - [ ] `README.md` updated if usage, setup, or architecture changed
-- [ ] `.github/copilot-instructions.md` and `CLAUDE.md` updated if the workflow, commands, or structure changed
+- [ ] `.github/copilot-instructions.md` and `AGENTS.md` updated if the workflow, commands, or structure changed
 - [ ] Commit messages follow `type(SCOPE): message` in simple past tense
 - [ ] Breaking changes flagged in the commit footer, the changelog, and the PR description
 
@@ -178,7 +179,7 @@ A review that raises noise gets ignored. Do not report these:
 | Severity       | Use for                                                                                                                            |
 |----------------|------------------------------------------------------------------------------------------------------------------------------------|
 | **Critical**   | Broken dependency direction, a leaked secret, an injection or authentication flaw, a missing changelog entry, a banned mock library, a load-bearing invariant broken, a test deleted rather than fixed. |
-| **Warning**    | Naming that departs from the guide, a missing test for a new branch of logic, an unexplained magic value, a stale README or instructions file, a `switch` that should be a map. |
+| **Warning**    | Naming that departs from the guide, an unexplained magic value, a stale README or instructions file, a `switch` that should be a map. |
 | **Suggestion** | Readability, consistency with neighbouring modules, and performance ideas that no rule mandates.                                     |
 
 Rank findings most severe first, and state plainly when nothing blocks the merge — an empty
